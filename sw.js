@@ -1,5 +1,5 @@
 // Change this version number every time you update your app's code!
-const CACHE_NAME = 'cuisine-store-v3'; 
+const CACHE_NAME = 'cuisine-store-v4'; 
 
 const ASSETS = [
   './',
@@ -7,8 +7,8 @@ const ASSETS = [
   './styles.css',
   './scratcher.js',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './icon_192.png',
+  './icon_512.png'
 ];
 
 // Install Event - Caches the new assets
