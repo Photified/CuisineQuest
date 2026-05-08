@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cuisine Quest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;1,500&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-wrapper">
+
+        <div id="ui-overlay" class="overlay">
+            <div id="message-screen" class="modal-box">
+                <h2 id="message-title">TITLE</h2>
+                <div id="message-body">Message body goes here.</div>
+                <button id="play-again-btn">SERVE DINNER</button>
+            </div>
+        </div>
+
+        <div id="settings-overlay" class="overlay">
+            <div class="modal-box">
+                <h2>Info & Settings</h2>
+                
+                <div class="instructions-box">
+                    <strong>How to Play:</strong>
+                    <p>1. Tap tiles to reveal. 2. Match 3 to win. 3. Serve dinner!</p>
+                </div>
+
+                <button id="install-btn" class="hidden">INSTALL APP 📱</button>
+                
+                <button id="close-settings-btn" class="secondary-btn">CLOSE</button>
+            </div>
+        </div>
+
+        <div class="cutting-board">
+            
+            <div class="menu-card">
+                
+                <button id="settings-btn" class="settings-btn">⚙️</button>
+
+                <div class="header">
+                    <div class="header-icon">🍴</div>
+                    <h1>CUISINE QUEST</h1>
+                    <p>Match 3 to choose tonight's dinner!</p>
+                </div>
+
+                <div class="game-board">
+                    <div class="ticket-container">
+                        <div id="under-grid" class="under-grid"></div>
+                        
+                        <canvas class="scratch-canvas" id="main-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="scratcher.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            // Using relative path for GitHub Pages
+            navigator.serviceWorker.register('./sw.js');
+        }
+    </script>
+</body>
+</html>

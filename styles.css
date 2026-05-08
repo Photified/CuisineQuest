@@ -1,0 +1,283 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    /* Faux Marble Background */
+    background: radial-gradient(circle at center, #f5efe6 0%, #d9cbbb 100%);
+    font-family: 'Nunito', sans-serif;
+    color: #4a3f35;
+    overflow: hidden; 
+    touch-action: none; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-wrapper {
+    position: relative;
+    width: 100vw; 
+    max-width: 500px; 
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Simulated Wooden Cutting Board */
+.cutting-board {
+    width: 100%;
+    background: linear-gradient(135deg, #e6c29a, #d4a373);
+    border-radius: 20px;
+    padding: 25px 20px;
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.15), 
+        inset 0 0 0 8px rgba(255,255,255,0.2), 
+        inset 0 0 20px rgba(139, 69, 19, 0.2);
+}
+
+/* The Paper Menu Card */
+.menu-card {
+    position: relative; 
+    background: #fdfbf7;
+    border-radius: 12px;
+    padding: 30px 15px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid #e0d8c8;
+}
+
+/* Cogwheel Button */
+.settings-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    padding: 5px;
+    transition: transform 0.2s;
+    opacity: 0.7;
+}
+
+.settings-btn:hover {
+    opacity: 1;
+}
+
+.settings-btn:active {
+    transform: scale(0.9) rotate(45deg);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header-icon {
+    font-size: 24px;
+    color: #b07d4c;
+    margin-bottom: 5px;
+}
+
+.header h1 {
+    font-family: 'Lora', serif;
+    color: #3e2723;
+    font-size: 26px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    color: #796d61;
+    font-size: 1rem;
+}
+
+.game-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* The Grid Container (Wood border around tiles) */
+.ticket-container {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1 / 1; 
+    border-radius: 8px; 
+    background-color: #fdfbf7; 
+    border: 8px solid #c89f70; 
+    box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* --- 6x6 GRID STYLING --- */
+.under-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+.grid-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #eae5d9; 
+}
+
+.grid-cell div {
+    font-size: 2.2rem; 
+    line-height: 1;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1)); 
+}
+
+.scratch-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    cursor: pointer;
+    transition: opacity 0.6s ease;
+}
+
+/* --- MODAL STYLES --- */
+.overlay {
+    position: absolute; 
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(245, 239, 230, 0.85); 
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #fdfbf7;
+    border: 4px solid #c89f70;
+    border-radius: 16px;
+    padding: 30px 20px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    color: #4a3f35;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+}
+
+.overlay.active .modal-box {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-box h2 { 
+    font-family: 'Lora', serif;
+    color: #3e2723; 
+    font-size: 24px; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+}
+
+.winner-emoji {
+    font-size: 6rem;
+    line-height: 1;
+    margin: 10px 0;
+    animation: bounceEmoji 1.5s infinite ease-in-out;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.15));
+}
+
+@keyframes bounceEmoji {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.modal-box p { 
+    font-size: 1.1rem; 
+    color: #796d61; 
+}
+
+.modal-box strong {
+    display: block;
+    font-size: 1.8rem;
+    color: #8c5a2b;
+    margin-top: 5px;
+    font-family: 'Lora', serif;
+}
+
+/* Instructions Box */
+.instructions-box {
+    text-align: center;
+    background: #f4f1ea;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0dcd3;
+    margin: 10px 0;
+}
+
+.instructions-box strong {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #3e2723;
+    display: block;
+}
+
+.instructions-box p {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* Buttons */
+.modal-box button {
+    background: #8c5a2b; 
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 18px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    cursor: pointer;
+    border-radius: 8px; 
+    letter-spacing: 1px;
+    margin-top: 5px;
+    box-shadow: 0 4px 0 #5e3b1a, 0 8px 15px rgba(140, 90, 43, 0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.modal-box button:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #5e3b1a, 0 2px 5px rgba(140, 90, 43, 0.3);
+}
+
+.modal-box button.secondary-btn {
+    background: #e0dcd3;
+    color: #4a3f35;
+    box-shadow: 0 4px 0 #babbb3, 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.modal-box button.secondary-btn:active {
+    box-shadow: 0 0 0 #babbb3, 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.hidden {
+    display: none !important;
+}
