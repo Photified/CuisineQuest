@@ -1,5 +1,5 @@
 // Change this version number every time you update your app's code!
-const CACHE_NAME = 'cuisine-store-v2'; 
+const CACHE_NAME = 'cuisine-store-v3'; 
 
 const ASSETS = [
   './',
