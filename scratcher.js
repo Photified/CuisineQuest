@@ -1,44 +1,51 @@
 // --- 1. GAME DATA (Massive list of meals) ---
 const CUISINES = [
-    { id: 'beef', name: "Beef", emoji: "🥩" }, 
-    { id: 'chicken', name: "Chicken", emoji: "🍗" },
-    { id: 'pork', name: "Pork", emoji: "🍖" },
-    { id: 'fish', name: "Fish", emoji: "🐟" },
-    { id: 'burger', name: "Burgers", emoji: "🍔" },
-    { id: 'pizza', name: "Pizza", emoji: "🍕" },
-    { id: 'tacos', name: "Tacos", emoji: "🌮" },
-    { id: 'pasta', name: "Pasta", emoji: "🍝" },
-    { id: 'stirfry', name: "Stir Fry", emoji: "🍳" },
-    { id: 'sandwich', name: "Sandwiches", emoji: "🥪" },
-    { id: 'grilledcheese', name: "Grilled Cheese", emoji: "🍞" },
-    { id: 'eggs', name: "Eggs", emoji: "🥚" },
-    { id: 'wraps', name: "Wraps", emoji: "🌯" },
-    { id: 'soup', name: "Soup", emoji: "🥣" },
-    { id: 'chili', name: "Chili", emoji: "🍲" },
-    { id: 'maccheese', name: "Mac & Cheese", emoji: "🧀" },
-    { id: 'hotdogs', name: "Hot Dogs", emoji: "🌭" },
-    { id: 'salad', name: "Salad", emoji: "🥗" },
-    { id: 'bakedpotato', name: "Baked Potato", emoji: "🥔" },
-    { id: 'friedrice', name: "Fried Rice", emoji: "🍚" },
-    { id: 'ramen', name: "Ramen", emoji: "🍜" },
-    { id: 'breakfast', name: "Brunch", emoji: "🥞" },
-    { id: 'leftovers', name: "Leftovers", emoji: "🥡" },
-    { id: 'sushi', name: "Sushi", emoji: "🍣" },
-    { id: 'curry', name: "Curry", emoji: "🍛" },
-    { id: 'indian', name: "Indian", emoji: "🫓" },
-    { id: 'dumplings', name: "Dumplings", emoji: "🥟" },
-    { id: 'gyros', name: "Gyros/Shawarma", emoji: "🥙" },
-    { id: 'tamales', name: "Tamales", emoji: "🫔" },
-    { id: 'meatballs', name: "Meatballs", emoji: "🧆" },
-    { id: 'bbq', name: "BBQ", emoji: "🔥" },
-    { id: 'seafood', name: "Seafood Boil", emoji: "🍤" },
-    { id: 'bento', name: "Bento Box", emoji: "🍱" },
-    { id: 'kbbq', name: "Korean BBQ", emoji: "🥓" }
+    { id: 'beef', name: "Beef", emoji: "🥩", suggestions: ["Steak Frites", "Beef Stroganoff", "Roast Beef", "Beef Wellington", "Korean Beef Bowl", "Beef Stew", "Carne Asada", "Beef Brisket", "Corned Beef", "Beef Bourguignon"] }, 
+    { id: 'chicken', name: "Chicken", emoji: "🍗", suggestions: ["Chicken Alfredo", "Roast Chicken", "Chicken Parmesan", "Lemon Pepper Chicken", "Chicken Piccata", "Chicken Marsala", "Chicken Tikka Masala", "Fried Chicken", "Chicken Fajitas", "BBQ Chicken"] },
+    { id: 'pork', name: "Pork", emoji: "🍖", suggestions: ["Pulled Pork", "Pork Chops", "Pork Tenderloin", "Sweet and Sour Pork", "Carnitas", "Pork Belly Bao", "BBQ Ribs", "Pork Katsu", "Tonkatsu Ramen", "Sausage and Peppers"] },
+    { id: 'fish', name: "Fish", emoji: "🐟", suggestions: ["Grilled Salmon", "Fish Tacos", "Fish and Chips", "Baked Cod", "Tuna Steaks", "Halibut Piccata", "Teriyaki Salmon", "Ceviche", "Pan-Seared Tilapia", "Fish Stew"] },
+    { id: 'burger', name: "Burgers", emoji: "🍔", suggestions: ["Cheeseburger", "Bacon Burger", "Mushroom Swiss", "Black Bean Burger", "Smashburger", "Turkey Burger", "Patty Melt", "Slider", "BBQ Bacon Burger", "Jalapeño Popper Burger"] },
+    { id: 'pizza', name: "Pizza", emoji: "🍕", suggestions: ["Margherita", "Pepperoni", "BBQ Chicken", "Meat Lovers", "Veggie Supreme", "White Pizza", "Hawaiian", "Buffalo Chicken", "Mushroom & Truffle", "Prosciutto & Arugula"] },
+    { id: 'tacos', name: "Tacos", emoji: "🌮", suggestions: ["Al Pastor", "Carne Asada", "Carnitas", "Fish Tacos", "Shrimp Tacos", "Chicken Tinga", "Birria", "Mushroom Tacos", "Breakfast Tacos", "Chorizo"] },
+    { id: 'pasta', name: "Pasta", emoji: "🍝", suggestions: ["Spaghetti & Meatballs", "Pesto Cavatappi", "Cacio e Pepe", "Penne alla Vodka", "Pasta Primavera", "Carbonara", "Lasagna", "Baked Ziti", "Fettuccine Alfredo", "Aglio e Olio"] },
+    { id: 'stirfry', name: "Stir Fry", emoji: "🍳", suggestions: ["Beef and Broccoli", "Chicken Teriyaki", "Tofu Stir Fry", "Shrimp Lo Mein", "Pad Thai", "Sweet and Sour Chicken", "Cashew Chicken", "Pepper Steak", "Vegetable Chop Suey", "Garlic Soba Noodles"] },
+    { id: 'sandwich', name: "Sandwiches", emoji: "🥪", suggestions: ["BLT", "Club Sandwich", "Reuben", "French Dip", "Philly Cheesesteak", "Turkey and Brie", "Cuban", "Meatball Sub", "Italian Grinder", "Egg Salad"] },
+    { id: 'grilledcheese', name: "Grilled Cheese", emoji: "🍞", suggestions: ["Classic Cheddar", "Gouda & Apple", "Bacon & Tomato", "Pesto Mozzarella", "Jalapeño Popper", "Triple Cream Brie", "Kimchi Grilled Cheese", "Mac & Cheese Stuffed", "Buffalo Chicken", "Fig & Prosciutto"] },
+    { id: 'eggs', name: "Eggs", emoji: "🥚", suggestions: ["Omelette", "Eggs Benedict", "Shakshuka", "Scrambled with Chives", "Sunny Side Up", "Quiche", "Frittata", "Egg Salad", "Huevos Rancheros", "Deviled Eggs"] },
+    { id: 'wraps', name: "Wraps", emoji: "🌯", suggestions: ["Chicken Caesar", "Buffalo Chicken", "Turkey Club", "Falafel Wrap", "Hummus & Veggie", "Tuna Salad Wrap", "BLT Wrap", "Greek Chicken Wrap", "Southwestern Wrap", "Breakfast Wrap"] },
+    { id: 'soup', name: "Soup", emoji: "🥣", suggestions: ["Tomato Basil", "Chicken Noodle", "French Onion", "Minestrone", "Butternut Squash", "Clam Chowder", "Lentil Soup", "Miso Soup", "Pho", "Potato Leek"] },
+    { id: 'chili', name: "Chili", emoji: "🍲", suggestions: ["Texas Red", "White Chicken Chili", "Turkey Chili", "Vegetarian Black Bean", "Spicy Beef", "Pumpkin Chili", "Three Bean Chili", "Cincinnati Chili", "Verde Chili", "Smoky Chipotle"] },
+    { id: 'maccheese', name: "Mac & Cheese", emoji: "🧀", suggestions: ["Classic Baked", "Lobster Mac", "Truffle Mac", "Bacon Mac", "Jalapeño Mac", "Buffalo Chicken Mac", "Four Cheese", "Pulled Pork Mac", "Vegan Cashew Mac", "Pesto Mac"] },
+    { id: 'hotdogs', name: "Hot Dogs", emoji: "🌭", suggestions: ["Chicago Style", "Chili Cheese Dog", "New York Style", "Corn Dog", "Bacon Wrapped", "Slaw Dog", "Sonoran Dog", "Pretzel Dog", "Mac & Cheese Dog", "Jalapeño Dog"] },
+    { id: 'salad', name: "Salad", emoji: "🥗", suggestions: ["Caesar Salad", "Cobb Salad", "Greek Salad", "Caprese", "Nicoise", "Spinach & Bacon", "Waldorf", "Chef Salad", "Taco Salad", "Quinoa Bowl"] },
+    { id: 'bakedpotato', name: "Baked Potato", emoji: "🥔", suggestions: ["Classic Loaded", "Broccoli & Cheddar", "Chili Cheese", "BBQ Chicken", "Sour Cream & Chive", "Vegetarian Bean", "Bacon & Ranch", "Buffalo Chicken", "Pulled Pork", "Taco Stuffed"] },
+    { id: 'friedrice', name: "Fried Rice", emoji: "🍚", suggestions: ["Chicken Fried Rice", "Pork Fried Rice", "Shrimp Fried Rice", "Vegetable Fried Rice", "Kimchi Fried Rice", "Pineapple Fried Rice", "Duck Fried Rice", "Spam Fried Rice", "Thai Basil Fried Rice", "Egg Fried Rice"] },
+    { id: 'ramen', name: "Ramen", emoji: "🍜", suggestions: ["Tonkotsu", "Shoyu", "Miso", "Shio", "Spicy Beef Ramen", "Chicken Katsu Ramen", "Vegan Ramen", "Seafood Ramen", "Tsukemen", "Garlic Butter Ramen"] },
+    { id: 'breakfast', name: "Brunch", emoji: "🥞", suggestions: ["Pancakes", "Waffles", "French Toast", "Avocado Toast", "Breakfast Burrito", "Hash Browns & Eggs", "Crepes", "Biscuits and Gravy", "Oatmeal Bowl", "Breakfast Hash"] },
+    { id: 'leftovers', name: "Leftovers", emoji: "🥡", suggestions: ["Pizza Reheat", "Pasta Bake", "Sandwich Remix", "Fried Rice", "Soup Medley", "Salad Toss", "Microwave Meal", "Leftover Tacos", "Kitchen Sink Frittata", "Snack Plate"] },
+    { id: 'sushi', name: "Sushi", emoji: "🍣", suggestions: ["Spicy Tuna Roll", "California Roll", "Dragon Roll", "Salmon Nigiri", "Rainbow Roll", "Spider Roll", "Yellowtail Sashimi", "Eel (Unagi) Roll", "Philadelphia Roll", "Veggie Roll"] },
+    { id: 'curry', name: "Curry", emoji: "🍛", suggestions: ["Chicken Tikka Masala", "Thai Green Curry", "Butter Chicken", "Japanese Curry", "Thai Red Curry", "Panang Curry", "Massaman Curry", "Chana Masala", "Beef Rendang", "Coconut Shrimp Curry"] },
+    { id: 'indian', name: "Indian", emoji: "🫓", suggestions: ["Tandoori Chicken", "Naan & Dips", "Palak Paneer", "Samosas", "Biryani", "Aloo Gobi", "Dal Makhani", "Lamb Rogan Josh", "Malai Kofta", "Vindaloo"] },
+    { id: 'dumplings', name: "Dumplings", emoji: "🥟", suggestions: ["Pork Potstickers", "Soup Dumplings", "Chicken Gyoza", "Har Gow (Shrimp)", "Pierogi", "Shumai", "Wontons", "Mandu", "Momo", "Veggie Dumplings"] },
+    { id: 'gyros', name: "Gyros/Shawarma", emoji: "🥙", suggestions: ["Traditional Lamb", "Chicken Shawarma", "Beef Gyro", "Falafel Pita", "Doner Kebab", "Halloumi Wrap", "Spicy Chicken", "Mixed Grill", "Gyro Salad Bowl", "Loaded Gyro Fries"] },
+    { id: 'tamales', name: "Tamales", emoji: "🫔", suggestions: ["Pork Colorado", "Chicken Verde", "Jalapeño & Cheese", "Sweet Corn Tamales", "Beef Tamales", "Black Bean & Corn", "Mole Chicken", "Chorizo Tamales", "Pineapple Tamales", "Dessert Tamales"] },
+    { id: 'meatballs', name: "Meatballs", emoji: "🧆", suggestions: ["Italian Meatballs", "Swedish Meatballs", "Sweet and Sour", "Turkey Meatballs", "Porcupine Meatballs", "Greek Lamb", "Asian Glazed", "Meatball Stroganoff", "Spicy Chicken", "Vegan Lentil"] },
+    { id: 'bbq', name: "BBQ", emoji: "🔥", suggestions: ["BBQ Ribs", "Smoked Brisket", "Pulled Pork", "Burnt Ends", "Smoked Sausage", "BBQ Chicken Quarters", "Smoked Turkey Leg", "BBQ Beans & Meat", "Tri-Tip", "Pork Belly"] },
+    { id: 'seafood', name: "Seafood Boil", emoji: "🍤", suggestions: ["Garlic Butter Crab", "Cajun Shrimp Boil", "Clambake", "Lobster Tails", "Crawfish Boil", "Mussels Marinara", "Oysters Rockefeller", "Scallop Scampi", "Fried Calamari", "Seafood Paella"] },
+    { id: 'bento', name: "Bento Box", emoji: "🍱", suggestions: ["Chicken Teriyaki Bento", "Salmon Shioyaki", "Tonkatsu Bento", "Sushi Bento", "Tempura Bento", "Karaage Bento", "Tamagoyaki Bento", "Unagi Bento", "Tofu Veggie Bento", "Yakiniku Bento"] },
+    { id: 'kbbq', name: "Korean BBQ", emoji: "🥓", suggestions: ["Bulgogi", "Galbi (Short Ribs)", "Pork Belly", "Spicy Pork", "Brisket", "Dak Galbi (Spicy Chicken)", "Bibimbap", "Japchae", "Kimchi Stew", "Seafood Pancake"] }
 ];
 
 let gridData = [];
 let revealedZones = []; 
 let gameWon = false;
+
+// Helper function to get 3 random suggestions
+function getRandomSuggestions(suggestionsArray, count = 3) {
+    if (!suggestionsArray || suggestionsArray.length === 0) return [];
+    const shuffled = [...suggestionsArray].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
 
 // --- 2. UI CONTROLLERS & PWA LOGIC ---
 const uiOverlay = document.getElementById('ui-overlay');
@@ -66,24 +73,18 @@ function showMessage(title, body) {
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent Chrome from showing the mini-infobar automatically
     e.preventDefault();
-    // Stash the event so it can be triggered later.
     deferredPrompt = e;
-    // Unhide our custom install button in the settings menu
     installBtn.classList.remove('hidden');
 });
 
 installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
-        // Show the native install prompt
         deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
-            installBtn.classList.add('hidden'); // Hide button if they accepted
+            installBtn.classList.add('hidden');
         }
-        // We can only use the prompt once, so clear it
         deferredPrompt = null;
     }
 });
@@ -232,6 +233,21 @@ function checkForWin(canvas) {
         if (revealedCounts[cuisine.id] === 3) {
             gameWon = true;
             canvas.style.opacity = '0';
+
+            // Fetch exactly 3 random suggestions
+            const topSuggestions = getRandomSuggestions(cuisine.suggestions, 3);
+            let suggestionsHTML = "";
+
+            if (topSuggestions.length > 0) {
+                suggestionsHTML = `
+                    <div class="suggestions-list">
+                        <p><strong>Chef's Suggestions:</strong></p>
+                        <ul>
+                            ${topSuggestions.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
             
             setTimeout(() => {
                 canvas.style.display = 'none'; 
@@ -239,7 +255,8 @@ function checkForWin(canvas) {
                     "WE HAVE A WINNER!", 
                     `<div class="winner-emoji">${cuisine.emoji}</div>
                      <p>You matched 3!</p>
-                     <p>Tonight's dinner is <strong>${cuisine.name}</strong></p>`
+                     <p>Tonight's dinner is <strong>${cuisine.name}</strong></p>
+                     ${suggestionsHTML}`
                 );
             }, 800); 
             
