@@ -90,7 +90,7 @@ const CUISINES = [
     },
     { 
         id: 'leftovers', name: "Leftovers", emoji: "🥡", 
-        suggestions: ["Pizza Reheat", "Pasta Bake", "Sandwich Remix", "Fried Rice Revival", "Soup Medley", "Salad Toss", "Microwave Meal", "Leftover Tacos", "Kitchen Sink Frittata", "Snack Plate/Girl Dinner", "Leftover Quesadilla", "Stuffed Peppers (using leftovers)"] 
+        suggestions: ["Whatever is in fridge", "Whatever is in fridge", "Whatever is in fridge"] 
     },
     { 
         id: 'sushi', name: "Sushi", emoji: "🍣", 
