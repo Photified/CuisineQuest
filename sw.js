@@ -1,43 +1,10 @@
-// Change this version number every time you update your app's code!
-const CACHE_NAME = 'cuisine-store-v4'; 
-
-const ASSETS = [
-  './',
-  './index.html',
-  './styles.css',
-  './scratcher.js',
-  './manifest.json',
-  './icon_192.png',
-  './icon_512.png'
-];
-
-// Install Event - Caches the new assets
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
-  self.skipWaiting(); // Forces the waiting service worker to become the active service worker
-});
-
-// Activate Event - Clears out old caches
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache); // Delete old versions
-          }
-        })
-      );
-    })
-  );
-  self.clients.claim(); // Take control of all pages immediately
-});
-
-// Fetch Event - Serve from cache, fallback to network
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => response || fetch(e.request))
-  );
+/* Change VERSION when publishing future edits. Scoped caches protect other GitHub Pages apps. */
+const VERSION='2026-10-29-v2';
+const PREFIX='cuisine-quest-'+encodeURIComponent(self.registration.scope)+'-';
+const CACHE=PREFIX+VERSION;
+const ASSETS=['./','./index.html','./styles.css','./engine.js','./scratcher.js','./meals.json','./manifest.json','./icon_192.png','./icon_512.png'];
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith(PREFIX)&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);if(url.origin!==self.location.origin||!url.href.startsWith(self.registration.scope))return;
+ event.respondWith(caches.open(CACHE).then(async cache=>{const cached=await cache.match(event.request,{ignoreSearch:true});if(cached)return cached;try{return await fetch(event.request);}catch(error){if(event.request.mode==='navigate')return await cache.match('./index.html');throw error;}}));
 });

@@ -1,71 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cuisine Quest</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;1,500&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#284c3c"><meta name="description" content="A little play. A delicious plan. Match three, discover dinner, and take a grocery list with you.">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Cuisine Quest">
+<title>Cuisine Quest</title><link rel="icon" href="icon_192.png"><link rel="apple-touch-icon" href="icon_192.png"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="styles.css">
+<script src="engine.js" defer></script><script src="scratcher.js" defer></script>
 </head>
 <body>
-
-    <div class="app-wrapper">
-
-        <div id="ui-overlay" class="overlay">
-            <div id="message-screen" class="modal-box">
-                <h2 id="message-title">TITLE</h2>
-                <div id="message-body">Message body goes here.</div>
-                <button id="play-again-btn">SERVE DINNER</button>
-            </div>
-        </div>
-
-        <div id="settings-overlay" class="overlay">
-            <div class="modal-box">
-                <h2>Info & Settings</h2>
-                
-                <div class="instructions-box">
-                    <strong>How to Play:</strong>
-                    <p>1. Tap tiles to reveal. 2. Match 3 to win. 3. Serve dinner!</p>
-                </div>
-
-                <button id="install-btn" class="hidden">INSTALL APP 📱</button>
-                
-                <button id="close-settings-btn" class="secondary-btn">CLOSE</button>
-            </div>
-        </div>
-
-        <div class="cutting-board">
-            
-            <div class="menu-card">
-                
-                <button id="settings-btn" class="settings-btn">⚙️</button>
-
-                <div class="header">
-                    <div class="header-icon">🍴</div>
-                    <h1>CUISINE QUEST</h1>
-                    <p>Match 3 to choose tonight's dinner!</p>
-                </div>
-
-                <div class="game-board">
-                    <div class="ticket-container">
-                        <div id="under-grid" class="under-grid"></div>
-                        
-                        <canvas class="scratch-canvas" id="main-canvas"></canvas>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <script src="scratcher.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            // Using relative path for GitHub Pages
-            navigator.serviceWorker.register('./sw.js');
-        }
-    </script>
-</body>
-</html>
+<div class="app-shell">
+<header class="topbar"><a class="brand" href="./" aria-label="Cuisine Quest home"><span class="brand-mark">cq<span>✦</span></span><span>Cuisine<br>Quest<span class="brand-dot">.</span></span></a><div class="top-actions"><span id="connection" class="connection">Your daily dinner detour</span><button class="icon-btn" data-action="settings" aria-label="Settings">⚙</button></div></header>
+<main>
+<section class="intro"><div class="eyebrow"><span class="tiny-star">✳</span> GOOD FOOD. LESS OVERTHINKING.</div><h1>What’s for dinner? <br><em>Let’s play.</em></h1><p class="intro-copy">Lift a lid. Match three.<br>Find something you’re excited to eat.</p>
+<div class="choice-area"><span class="field-caption">TONIGHT, I’M…</span><div class="segmented" id="mode-buttons" aria-label="Dinner mode"><button data-action="mode" data-mode="cook">⌂ <span>Cooking</span></button><button data-action="mode" data-mode="order">↗ <span>Ordering</span></button><button data-action="mode" data-mode="either">✦ <span>Either</span></button></div><button class="filter-button" data-action="filters"><span>☷ <span id="filter-label">Anything sounds good</span></span><span>Adjust ↗</span></button></div>
+<div class="desktop-note"><span class="note-flower">✳</span><p><strong>A fresh little adventure.</strong><br>Recent winners take a break.<br>New ideas get their turn.</p></div>
+</section>
+<section class="play-section" aria-label="Dinner matching game"><div class="game-card"><div class="board-heading"><div><span class="eyebrow">THE DINNER DRAW</span><h2>Good things under cover.</h2></div><span id="tap-count" class="tap-count">0 <small>revealed</small></span></div><div id="board" class="board" aria-label="Sixteen covered dishes"><p class="loading">Setting the table…</p></div><div class="board-bottom"><span id="game-hint" role="status">Match any 3 to reveal your dinner ideas.</span><button data-action="new" class="text-button">New menu ↻</button></div></div><div id="progress" class="progress" aria-label="Match progress"></div><div class="game-footnote"><span>✦ A winner in 9 reveals or fewer</span><span id="pool-count"></span></div></section>
+</main>
+<nav class="bottom-nav" aria-label="Your kitchen"><button class="nav-item active" data-action="play"><span>▦</span>Play</button><button class="nav-item" data-action="saved"><span>♡</span>Saved <b id="saved-count" hidden></b></button><button class="nav-item" data-action="groceries"><span>☷</span>Grocery list <b id="grocery-count" hidden></b></button><button class="nav-item" data-action="help"><span>?</span>How it works</button></nav>
+<footer class="page-footer">A LITTLE PLAY. A DELICIOUS PLAN.</footer>
+</div>
+<dialog id="modal" aria-labelledby="modal-title"><div class="modal-top"><button class="icon-btn" id="modal-back" data-action="back" aria-label="Go back" hidden>←</button><span class="eyebrow" id="modal-eyebrow">CUISINE QUEST</span><button class="icon-btn close-btn" data-action="close" aria-label="Close dialog">×</button></div><div id="modal-body"></div></dialog>
+<div id="toast" role="status" class="toast"></div><div id="confetti" aria-hidden="true"></div>
+<noscript><p class="noscript">Please enable JavaScript to play Cuisine Quest.</p></noscript>
+</body></html>

@@ -1,370 +1,114 @@
-// --- 1. GAME DATA (Massive list of meals) ---
-const CUISINES = [
-    { 
-        id: 'beef', name: "Beef", emoji: "🥩", 
-        suggestions: ["Steak Frites", "Beef Stroganoff", "Pot Roast", "Beef Wellington", "Korean Beef Bowl", "Beef Stew", "Carne Asada", "Beef Brisket", "Corned Beef", "Beef Bourguignon", "Mongolian Beef", "Salisbury Steak", "Beef Enchiladas", "Prime Rib", "Philly Cheesesteak", "Beef Kebabs", "Flank Steak with Chimichurri", "Meatloaf", "Braised Short Ribs", "Beef Empanadas", "Steak Salad"] 
-    }, 
-    { 
-        id: 'chicken', name: "Chicken", emoji: "🍗", 
-        suggestions: ["Chicken Alfredo", "Roast Chicken", "Chicken Parmesan", "Lemon Pepper Chicken", "Chicken Piccata", "Chicken Marsala", "Fried Chicken", "Chicken Fajitas", "BBQ Chicken", "Chicken Pot Pie", "Orange Chicken", "Chicken Enchiladas", "Buffalo Wings", "Chicken Katsu", "Chicken Cordon Bleu", "Pesto Chicken", "Teriyaki Chicken", "Chicken Souvlaki", "Jerk Chicken", "Chicken and Waffles", "Coq au Vin"] 
-    },
-    { 
-        id: 'pork', name: "Pork", emoji: "🍖", 
-        suggestions: ["Pulled Pork", "Pork Chops", "Roasted Pork Tenderloin", "Sweet and Sour Pork", "Carnitas", "Pork Belly Bao", "BBQ Ribs", "Pork Katsu", "Sausage and Peppers", "Glazed Ham", "Pork Milanese", "Moo Shu Pork", "Pork Schnitzel", "Bratwurst & Sauerkraut", "Pork Fried Rice", "Pork Souvlaki"] 
-    },
-    { 
-        id: 'fish', name: "Fish", emoji: "🐟", 
-        suggestions: ["Grilled Salmon", "Fish Tacos", "Fish and Chips", "Baked Cod", "Seared Tuna Steaks", "Halibut Piccata", "Teriyaki Salmon", "Ceviche", "Pan-Seared Tilapia", "Fish Stew", "Mahi Mahi Mango Salsa", "Blackened Catfish", "Salmon Burgers", "Poke Bowl", "Trout Amandine", "Baja Fish Burritos", "Smoked Salmon Bagel"] 
-    },
-    { 
-        id: 'burger', name: "Burgers", emoji: "🍔", 
-        suggestions: ["Classic Cheeseburger", "Bacon Blue Cheese Burger", "Mushroom Swiss", "Black Bean Burger", "Smashburger", "Turkey Burger", "Patty Melt", "Sliders", "BBQ Bacon Burger", "Jalapeño Popper Burger", "Beyond/Impossible Burger", "Hawaiian Teriyaki Burger", "Fried Egg Burger", "Green Chile Burger"] 
-    },
-    { 
-        id: 'pizza', name: "Pizza", emoji: "🍕", 
-        suggestions: ["Margherita", "Pepperoni & Hot Honey", "BBQ Chicken", "Meat Lovers", "Veggie Supreme", "White Pizza (Bianca)", "Hawaiian", "Buffalo Chicken", "Mushroom & Truffle Oil", "Prosciutto & Arugula", "Four Cheese", "Pesto & Sun-dried Tomato", "Spinach & Feta", "Sausage & Peppers", "Fig & Goat Cheese"] 
-    },
-    { 
-        id: 'tacos', name: "Tacos", emoji: "🌮", 
-        suggestions: ["Al Pastor", "Carne Asada", "Carnitas", "Baja Fish Tacos", "Shrimp Tacos", "Chicken Tinga", "Birria Tacos", "Mushroom Tacos", "Breakfast Tacos", "Chorizo & Potato", "Sweet Potato & Black Bean", "Fried Avocado Tacos", "Barbacoa", "Cauliflower Walnut Tacos"] 
-    },
-    { 
-        id: 'pasta', name: "Pasta", emoji: "🍝", 
-        suggestions: ["Spaghetti & Meatballs", "Pesto Cavatappi", "Cacio e Pepe", "Penne alla Vodka", "Pasta Primavera", "Carbonara", "Lasagna", "Baked Ziti", "Fettuccine Alfredo", "Aglio e Olio", "Linguine & Clams", "Ravioli with Sage Butter", "Bolognese", "Shrimp Scampi", "Pasta Puttanesca", "Gnocchi with Gorgonzola", "Stuffed Shells", "Manicotti", "Lemon Ricotta Pasta", "Sausage Orecchiette"] 
-    },
-    { 
-        id: 'stirfry', name: "Stir Fry", emoji: "🍳", 
-        suggestions: ["Beef and Broccoli", "Chicken Teriyaki", "Tofu Stir Fry", "Shrimp Lo Mein", "Pad Thai", "Sweet and Sour Chicken", "Cashew Chicken", "Pepper Steak", "Vegetable Chop Suey", "Garlic Soba Noodles", "Kung Pao Chicken", "Mongolian Beef", "Dan Dan Noodles", "Drunken Noodles", "Hoisin Pork Stir Fry"] 
-    },
-    { 
-        id: 'sandwich', name: "Sandwiches", emoji: "🥪", 
-        suggestions: ["BLT", "Club Sandwich", "Reuben", "French Dip", "Philly Cheesesteak", "Turkey and Brie", "Cuban", "Meatball Sub", "Italian Grinder", "Egg Salad", "Tuna Melt", "Chicken Salad Sandwich", "Caprese Sandwich", "Pulled Pork Sandwich", "Banh Mi", "Muffuletta", "Croque Monsieur", "Pork Belly BLT"] 
-    },
-    { 
-        id: 'grilledcheese', name: "Grilled Cheese", emoji: "🍞", 
-        suggestions: ["Classic Cheddar", "Gouda & Apple", "Bacon & Tomato", "Pesto Mozzarella", "Jalapeño Popper", "Triple Cream Brie", "Kimchi Grilled Cheese", "Mac & Cheese Stuffed", "Buffalo Chicken", "Fig & Prosciutto", "French Onion Grilled Cheese", "Spinach Artichoke", "Mushroom & Gruyere"] 
-    },
-    { 
-        id: 'eggs', name: "Eggs", emoji: "🥚", 
-        suggestions: ["Denver Omelette", "Eggs Benedict", "Shakshuka", "Scrambled with Chives", "Sunny Side Up & Toast", "Quiche Lorraine", "Vegetable Frittata", "Egg Salad", "Huevos Rancheros", "Deviled Eggs", "Scotch Eggs", "Croque Madame", "Breakfast Hash", "Egg Drop Soup", "Menemen (Turkish Eggs)"] 
-    },
-    { 
-        id: 'wraps', name: "Wraps", emoji: "🌯", 
-        suggestions: ["Chicken Caesar", "Buffalo Chicken", "Turkey Club", "Falafel Wrap", "Hummus & Veggie", "Tuna Salad Wrap", "BLT Wrap", "Greek Chicken Wrap", "Southwestern Wrap", "Breakfast Wrap", "Thai Peanut Chicken Wrap", "California Burrito", "Shawarma Wrap"] 
-    },
-    { 
-        id: 'soup', name: "Soup", emoji: "🥣", 
-        suggestions: ["Tomato Basil", "Chicken Noodle", "French Onion", "Minestrone", "Butternut Squash", "Clam Chowder", "Lentil Soup", "Miso Soup", "Pho", "Potato Leek", "Broccoli Cheddar", "Tortilla Soup", "Corn Chowder", "Split Pea", "Matzo Ball", "Tom Yum", "Italian Wedding Soup", "Gazpacho", "Mushroom Barley", "Pozole"] 
-    },
-    { 
-        id: 'chili', name: "Chili", emoji: "🍲", 
-        suggestions: ["Classic Texas Red", "White Chicken Chili", "Turkey Chili", "Vegetarian Black Bean", "Spicy Beef & Kidney Bean", "Pumpkin Chili", "Three Bean Chili", "Cincinnati Chili", "Verde Pork Chili", "Smoky Chipotle Chili", "Lentil Chili", "Brisket Chili"] 
-    },
-    { 
-        id: 'maccheese', name: "Mac & Cheese", emoji: "🧀", 
-        suggestions: ["Classic Baked Mac", "Lobster Mac", "Truffle Mac", "Bacon Mac", "Jalapeño Popper Mac", "Buffalo Chicken Mac", "Four Cheese", "Pulled Pork Mac", "Vegan Cashew Mac", "Pesto Mac", "Chili Mac", "Broccoli Mac & Cheese", "Cajun Shrimp Mac"] 
-    },
-    { 
-        id: 'hotdogs', name: "Hot Dogs", emoji: "🌭", 
-        suggestions: ["Chicago Style", "Chili Cheese Dog", "New York Style (Kraut & Mustard)", "Corn Dog", "Bacon Wrapped", "Slaw Dog", "Sonoran Dog", "Pretzel Dog", "Mac & Cheese Dog", "Jalapeño Dog", "Seattle Dog (Cream Cheese & Onions)", "Pigs in a Blanket", "Bratwurst"] 
-    },
-    { 
-        id: 'salad', name: "Salad", emoji: "🥗", 
-        suggestions: ["Caesar Salad", "Cobb Salad", "Greek Salad", "Caprese", "Nicoise", "Spinach & Warm Bacon Dressing", "Waldorf", "Chef Salad", "Taco Salad", "Quinoa Bowl", "Fattoush", "Panzanella", "Southwest Chicken Salad", "Strawberry Spinach Salad", "Asian Cabbage Salad", "Beet & Goat Cheese Salad", "Wedge Salad", "Kale & Cranberry Salad"] 
-    },
-    { 
-        id: 'bakedpotato', name: "Baked Potato", emoji: "🥔", 
-        suggestions: ["Classic Loaded", "Broccoli & Cheddar", "Chili Cheese", "BBQ Chicken Stuffed", "Sour Cream & Chive", "Vegetarian Black Bean", "Bacon & Ranch", "Buffalo Chicken Stuffed", "Pulled Pork Stuffed", "Taco Stuffed", "Mushroom & Swiss Stuffed", "Philly Cheesesteak Potato"] 
-    },
-    { 
-        id: 'friedrice', name: "Fried Rice", emoji: "🍚", 
-        suggestions: ["Chicken Fried Rice", "Pork Fried Rice", "Shrimp Fried Rice", "Vegetable Fried Rice", "Kimchi Fried Rice", "Pineapple Fried Rice", "Duck Fried Rice", "Spam Fried Rice", "Thai Basil Fried Rice", "Egg Fried Rice", "Bacon Fried Rice", "Mushroom Fried Rice"] 
-    },
-    { 
-        id: 'ramen', name: "Ramen", emoji: "🍜", 
-        suggestions: ["Tonkotsu", "Shoyu", "Miso", "Shio", "Spicy Beef Ramen", "Chicken Katsu Ramen", "Vegan Ramen", "Seafood Ramen", "Tsukemen (Dipping Noodles)", "Garlic Butter Ramen", "Tan Tan Ramen", "Curry Ramen"] 
-    },
-    { 
-        id: 'breakfast', name: "Brunch", emoji: "🥞", 
-        suggestions: ["Buttermilk Pancakes", "Belgian Waffles", "French Toast", "Avocado Toast", "Breakfast Burrito", "Hash Browns & Eggs", "Crepes", "Biscuits and Gravy", "Oatmeal Bowl", "Breakfast Hash", "Chilaquiles", "Bagel & Lox", "Dutch Baby Pancake", "Smoothie Bowl", "Scones & Jam"] 
-    },
-    { 
-        id: 'leftovers', name: "Leftovers", emoji: "🥡", 
-        suggestions: ["Whatever is in fridge", "Whatever is in fridge", "Whatever is in fridge"] 
-    },
-    { 
-        id: 'sushi', name: "Sushi", emoji: "🍣", 
-        suggestions: ["Spicy Tuna Roll", "California Roll", "Dragon Roll", "Salmon Nigiri", "Rainbow Roll", "Spider Roll", "Yellowtail Sashimi", "Eel (Unagi) Roll", "Philadelphia Roll", "Veggie Roll", "Dynamite Roll", "Volcano Roll", "Tuna Tataki", "Chirashi Bowl"] 
-    },
-    { 
-        id: 'curry', name: "Curry", emoji: "🍛", 
-        suggestions: ["Chicken Tikka Masala", "Thai Green Curry", "Butter Chicken", "Japanese Curry", "Thai Red Curry", "Panang Curry", "Massaman Curry", "Chana Masala", "Beef Rendang", "Coconut Shrimp Curry", "Yellow Potato Curry", "Lamb Vindaloo", "Goan Fish Curry"] 
-    },
-    { 
-        id: 'indian', name: "Indian", emoji: "🫓", 
-        suggestions: ["Tandoori Chicken", "Naan & Dips", "Palak Paneer", "Samosas", "Biryani", "Aloo Gobi", "Dal Makhani", "Lamb Rogan Josh", "Malai Kofta", "Vindaloo", "Chicken Korma", "Saag Gosht", "Chole Bhature", "Paneer Tikka"] 
-    },
-    { 
-        id: 'dumplings', name: "Dumplings", emoji: "🥟", 
-        suggestions: ["Pork Potstickers", "Soup Dumplings (Xiao Long Bao)", "Chicken Gyoza", "Har Gow (Shrimp)", "Pierogi", "Shumai", "Wontons in Chili Oil", "Korean Mandu", "Nepalese Momo", "Veggie Dumplings", "Pelmeni", "Empanadas", "Manti"] 
-    },
-    { 
-        id: 'gyros', name: "Gyros/Shawarma", emoji: "🥙", 
-        suggestions: ["Traditional Lamb Gyro", "Chicken Shawarma", "Beef Gyro", "Falafel Pita", "Doner Kebab", "Halloumi Wrap", "Spicy Chicken Gyro", "Mixed Grill Plate", "Gyro Salad Bowl", "Loaded Gyro Fries", "Iskender Kebab"] 
-    },
-    { 
-        id: 'tamales', name: "Tamales", emoji: "🫔", 
-        suggestions: ["Pork Colorado", "Chicken Verde", "Jalapeño & Cheese (Rajas)", "Sweet Corn Tamales", "Beef Tamales", "Black Bean & Corn", "Mole Chicken", "Chorizo Tamales", "Pineapple Tamales", "Dessert Tamales", "Bean & Cheese", "Shrimp Tamales"] 
-    },
-    { 
-        id: 'meatballs', name: "Meatballs", emoji: "🧆", 
-        suggestions: ["Italian Meatballs", "Swedish Meatballs", "Sweet and Sour Meatballs", "Turkey Meatballs", "Porcupine Meatballs", "Greek Lamb Keftedes", "Asian Glazed Meatballs", "Meatball Stroganoff", "Spicy Chicken Meatballs", "Vegan Lentil Meatballs", "Albondigas Soup"] 
-    },
-    { 
-        id: 'bbq', name: "BBQ", emoji: "🔥", 
-        suggestions: ["BBQ Ribs", "Smoked Brisket", "Pulled Pork", "Burnt Ends", "Smoked Sausage", "BBQ Chicken Quarters", "Smoked Turkey Leg", "BBQ Beans & Meat", "Tri-Tip", "Pork Belly", "Texas Hot Links", "Smoked Salmon", "BBQ Pulled Chicken"] 
-    },
-    { 
-        id: 'seafood', name: "Seafood Boil", emoji: "🍤", 
-        suggestions: ["Garlic Butter Crab Legs", "Cajun Shrimp Boil", "New England Clambake", "Lobster Tails", "Crawfish Boil", "Mussels Marinara", "Oysters Rockefeller", "Scallop Scampi", "Fried Calamari", "Seafood Paella", "Shrimp and Grits", "Clam Linguine"] 
-    },
-    { 
-        id: 'bento', name: "Bento Box", emoji: "🍱", 
-        suggestions: ["Chicken Teriyaki Bento", "Salmon Shioyaki", "Tonkatsu Bento", "Sushi Bento", "Tempura Bento", "Karaage (Fried Chicken) Bento", "Tamagoyaki Bento", "Unagi (Eel) Bento", "Tofu Veggie Bento", "Yakiniku (Grilled Meat) Bento", "Saba (Mackerel) Bento"] 
-    },
-    { 
-        id: 'kbbq', name: "Korean BBQ", emoji: "🥓", 
-        suggestions: ["Bulgogi (Marinated Beef)", "Galbi (Short Ribs)", "Samgyeopsal (Pork Belly)", "Spicy Pork Bulgogi", "Chadolbaegi (Beef Brisket)", "Dak Galbi (Spicy Chicken)", "Bibimbap", "Japchae", "Kimchi Stew (Jjigae)", "Seafood Pancake (Haemul Pajeon)", "Tteokbokki", "Banchan Tasting Plate"] 
-    }
-];
-
-let gridData = [];
-let revealedZones = []; 
-let gameWon = false;
-
-// Helper function to get 3 random suggestions
-function getRandomSuggestions(suggestionsArray, count = 3) {
-    if (!suggestionsArray || suggestionsArray.length === 0) return [];
-    const shuffled = [...suggestionsArray].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const KEY='cuisine-quest-v2';
+const defaults={mode:'either',mood:'all',source:'discover',servings:2,sound:false,haptics:false,avoid:'',excluded:[],favourites:[],skipped:[],recentWinners:[],categorySeen:{},mealSeen:{},history:[],groceries:[],introSeen:false,city:''};
+let state={...defaults},storageOK=true;
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object')state={...defaults,...saved};}catch{storageOK=false;}
+// Keep local preferences resilient to an interrupted or older saved session.
+for(const key of ['excluded','favourites','skipped','recentWinners','history','groceries'])if(!Array.isArray(state[key]))state[key]=[];
+for(const key of ['categorySeen','mealSeen'])if(!state[key]||typeof state[key]!=='object'||Array.isArray(state[key]))state[key]={};
+if(!['cook','order','either'].includes(state.mode))state.mode='either';
+if(!['all','quick','budget','comfort','adventurous'].includes(state.mood))state.mood='all';
+if(!['discover','favourites'].includes(state.source))state.source='discover';
+state.avoid=typeof state.avoid==='string'?state.avoid:'';state.city=typeof state.city==='string'?state.city:'';
+state.servings=Math.max(1,Math.min(8,Number(state.servings)||2));
+let data={categories:[],meals:[]},mealMap=new Map(),catMap=new Map(),available=[],round={cats:[],tiles:[],revealed:new Set(),counts:{},winner:null},cards=[],view='',backView='',activeMeal=null,savedTab='favourites',timer=null,toastTimer=null,deferredInstall=null,registration=null,pendingUpdate=null,filtersDirty=false,audioContext=null;
+const modal=$('#modal');
+const moods={all:['Anything','Keep the possibilities open'],quick:['Quick & easy','Home dinners around 30 minutes or less'],budget:['Budget friendly','Home meals built around simple staples'],comfort:['Comfort food','Cosy, familiar favourites'],adventurous:['Feeling adventurous','Explore a different flavour']};
+const lid='<svg viewBox="0 0 80 60" fill="none" aria-hidden="true"><path d="M39 11V7m-5 0h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M12 43a28 28 0 0 1 56 0" fill="currentColor" opacity=".15"/><path d="M12 43a28 28 0 0 1 56 0M8 44h64M14 50h52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M23 30a18 18 0 0 1 13-10" stroke="white" stroke-opacity=".65" stroke-width="3" stroke-linecap="round"/></svg>';
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch{storageOK=false;toast('Storage is unavailable. Changes will last for this visit only.');}updateBadges();}
+function toast(message){clearTimeout(toastTimer);const el=$('#toast');(modal.open?modal:document.body).appendChild(el);el.textContent=message;el.classList.add('visible');toastTimer=setTimeout(()=>el.classList.remove('visible'),3400);}
+function updateBadges(){for(const [id,n]of [['saved-count',state.favourites.length],['grocery-count',state.groceries.reduce((n,g)=>n+g.items.filter(i=>!i.checked).length,0)]]){const e=$('#'+id);e.textContent=n;e.hidden=!n;}}
+function syncControls(){document.querySelectorAll('[data-action="mode"]').forEach(b=>{b.classList.toggle('selected',b.dataset.mode===state.mode);b.setAttribute('aria-pressed',b.dataset.mode===state.mode);});$('#filter-label').textContent=(state.source==='favourites'?'From favourites':state.mood==='all'?'Anything sounds good':moods[state.mood][0])+(state.excluded.length||state.avoid?' · preferences on':'');updateBadges();}
+function pulse(win=false){if(state.haptics&&navigator.vibrate)navigator.vibrate(win?[35,40,60]:12);if(!state.sound)return;try{audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext)();audioContext.resume();const t=audioContext.currentTime;for(let i=0;i<(win?3:1);i++){const o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=(win?[523,659,784]:[420])[i];g.gain.setValueAtTime(0,t+i*.1);g.gain.linearRampToValueAtTime(.06,t+i*.1+.015);g.gain.exponentialRampToValueAtTime(.001,t+i*.1+.14);o.connect(g);g.connect(audioContext.destination);o.start(t+i*.1);o.stop(t+i*.1+.16);}}catch{/* Sound is optional. */}}
+function newRound(){clearTimeout(timer);cards=[];available=CQ.pool(data.meals,state);const cats=CQ.candidates(available,state);round={cats,tiles:CQ.board(cats),revealed:new Set(),counts:{},winner:null};cats.forEach(c=>{state.categorySeen[c]=(state.categorySeen[c]||0)+1;});save();syncControls();renderBoard();}
+function renderBoard(){const board=$('#board');if(!round.tiles.length){board.innerHTML='<div class="empty-board"><strong>No dinners in this mix yet.</strong><p>Try another mood, enable more categories, or save a few favourites.</p><button class="primary" data-action="filters">Adjust my mix</button><button class="text-button full" data-action="reset-filters">Show all dinners</button></div>';}else{board.innerHTML=round.tiles.map((cat,i)=>`<button class="tile" data-action="reveal" data-index="${i}" aria-label="Lift dish ${i+1}"><span class="tile-lid">${lid}<span class="tile-number">${String(i+1).padStart(2,'0')}</span></span><span class="tile-food" aria-hidden="true"></span></button>`).join('');}$('#tap-count').innerHTML='0 <small>revealed</small>';$('#game-hint').textContent='Match any 3 to reveal your dinner ideas.';$('#pool-count').textContent=available.length+' dinner ideas in your mix';renderProgress();}
+function renderProgress(){$('#progress').innerHTML=round.cats.map(id=>{const c=catMap.get(id),n=round.counts[id]||0;return `<div class="progress-chip ${n===2?'near':''} ${n>=3?'won':''}" aria-label="${esc(c.name)}: ${n} of 3"><span class="progress-name"><span>${c.emoji}</span>${esc(c.name)}</span><span class="pips" aria-hidden="true">${[1,2,3].map(x=>`<i class="pip ${x<=n?'filled':''}"></i>`).join('')}</span></div>`;}).join('');}
+function reveal(index){if(round.winner||round.revealed.has(index)||!round.tiles[index])return;const id=round.tiles[index],c=catMap.get(id),button=$(`[data-index="${index}"]`);round.revealed.add(index);round.counts[id]=(round.counts[id]||0)+1;button.querySelector('.tile-food').innerHTML=`<span class="food-emoji">${c.emoji}</span><span class="food-name">${esc(c.name)}</span>`;button.classList.add('revealed');button.setAttribute('aria-label',c.name+', revealed');button.setAttribute('aria-disabled','true');$('#tap-count').innerHTML=round.revealed.size+' <small>revealed</small>';pulse();
+if(round.counts[id]>=2){for(const n of round.revealed)if(round.tiles[n]===id)$(`[data-index="${n}"]`).classList.add('pair');$('#game-hint').textContent=c.name+' is one away…';}renderProgress();if(round.counts[id]===3){round.winner=id;state.recentWinners=[...state.recentWinners,id].slice(-12);save();for(const n of round.revealed)if(round.tiles[n]===id)$(`[data-index="${n}"]`).classList.add('winning');$('#game-hint').textContent=c.name+' it is! Your dinner ideas are ready.';$('#board').querySelectorAll('button').forEach(b=>b.setAttribute('aria-disabled','true'));pulse(true);celebrate();pickCards();timer=setTimeout(()=>openView('results'),650);}}
+function celebrate(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const holder=$('#confetti');holder.replaceChildren();for(let i=0;i<30;i++){const el=document.createElement('i');el.className='confetto';el.style.left=Math.random()*100+'%';el.style.background=['#bc4632','#e6b948','#284c3c','#9da97c'][i%4];el.style.animationDelay=Math.random()*.25+'s';holder.append(el);}setTimeout(()=>holder.replaceChildren(),2200);}
+function stamp(meals){const now=Date.now();meals.forEach((m,i)=>state.mealSeen[m.id]=now+i);save();}
+function pickCards(){const options=available.filter(m=>m.cat===round.winner);if(state.mode==='either'&&options.some(m=>m.kind==='cook')&&options.some(m=>m.kind==='order')){cards=[...CQ.suggestions(options.filter(m=>m.kind==='cook'),state.mealSeen,2),...CQ.suggestions(options.filter(m=>m.kind==='order'),state.mealSeen,1)];}else cards=CQ.suggestions(options,state.mealSeen);stamp(cards);}
+function swapMeal(id){const replacement=CQ.suggestions(available.filter(m=>m.cat===round.winner),state.mealSeen,1,cards.map(m=>m.id))[0];if(!replacement){toast('You’ve seen every option in this mix. Try another menu.');return;}cards=cards.map(m=>m.id===id?replacement:m);stamp([replacement]);renderView();toast('A different idea, coming right up.');}
+function favButton(m){return `<button class="heart ${state.favourites.includes(m.id)?'saved':''}" data-action="favourite" data-id="${m.id}" aria-label="${state.favourites.includes(m.id)?'Unsave':'Save'} ${esc(m.name)}" aria-pressed="${state.favourites.includes(m.id)}">${state.favourites.includes(m.id)?'♥':'♡'}</button>`;}
+function mealCard(m,swappable=false){const c=catMap.get(m.cat);return `<article class="meal-card"><div class="meal-art" aria-hidden="true">${c.emoji}</div><div class="meal-info"><div class="meal-meta">${m.kind==='cook'?'COOK · ABOUT '+m.minutes+' MIN':'ORDER OUT · RESTAURANT SEARCH'}</div><h3>${esc(m.name)}</h3><div class="meal-links"><button class="text-button" data-action="meal" data-id="${m.id}">${m.kind==='cook'?'Ingredients & steps':'What to order'} ↗</button>${swappable?`<button class="text-button" data-action="swap" data-id="${m.id}">Not feeling it ↻</button>`:''}</div></div>${favButton(m)}</article>`;}
+function openView(next,back=''){view=next;backView=back;renderView();if(!modal.open)modal.showModal();modal.scrollTop=0;}
+function title(text,sub=''){return `<h2 id="modal-title" class="modal-title" tabindex="-1">${text}</h2>${sub?`<p class="subtext">${sub}</p>`:''}`;}
+function renderView(){let html='';$('#modal-back').hidden=!backView;$('#modal-eyebrow').textContent=view==='results'?'YOUR DINNER, DECIDED':'CUISINE QUEST';
+if(view==='results'){const c=catMap.get(round.winner);if(!c){closeModal();return;}html=`<div class="winner-head"><div class="winner-emoji">${c.emoji}</div><span class="eyebrow">THREE OF A KIND. ONE GOOD IDEA.</span>${title(c.name+' it is!',`Matched in ${round.revealed.size} reveals. Pick the dinner that speaks to you.`)}</div><div class="meal-cards">${cards.map(m=>mealCard(m,true)).join('')}</div><div class="modal-actions"><button class="secondary" data-action="more">More ideas ↻</button><button class="primary" data-action="new">Play another menu</button></div>`;}
+else if(view==='meal')html=recipeHTML();
+else if(view==='filters'){html=title('What sounds good?','A few little preferences. A much better dinner.')+'<span class="field-caption">PICK FROM</span><div class="segmented">'+['discover','favourites'].map(s=>`<button class="${state.source===s?'selected':''}" data-action="source" data-source="${s}" aria-pressed="${state.source===s}">${s==='discover'?'✦ Discover':'♡ My favourites'}</button>`).join('')+'</div><h3 class="section-title">Set the mood</h3><div class="option-grid">'+Object.entries(moods).filter(([k])=>state.mode!=='order'||!['quick','budget'].includes(k)).map(([k,[name,desc]])=>`<button class="option ${state.mood===k?'selected':''}" data-action="mood" data-mood="${k}" aria-pressed="${state.mood===k}">${name}<small>${desc}</small></button>`).join('')+`</div><p class="subtext">${state.favourites.length} saved meals · ${CQ.pool(data.meals,state).length} ideas match these choices.</p><button class="primary full" data-action="apply-filters">Set my table</button><button class="text-button full" data-action="settings">Food preferences & settings ↗</button>`;}
+else if(view==='settings')html=settingsHTML();
+else if(view==='groceries')html=groceriesHTML();
+else if(view==='saved')html=savedHTML();
+else if(view==='help'){html=title('A little play.<br>A delicious plan.','Dinner decisions can be the fun part.')+`<div class="help-steps"><div class="help-step"><span>⌂</span><div><strong>Pick your kind of night.</strong><p>Cook, order out, or keep both options open. Adjust the mood whenever you like.</p></div></div><div class="help-step"><span>♧</span><div><strong>Lift a lid. Find a match.</strong><p>Tap the covered dishes. The first food to appear three times wins. Every menu finishes in nine reveals or fewer.</p></div></div><div class="help-step"><span>♡</span><div><strong>Make it yours.</strong><p>Choose a dinner, save favourites, or swap an idea. Home meals include a grocery checklist and short cooking steps.</p></div></div></div><button class="primary full" data-action="close">Let’s find dinner</button><p class="note">Saved meals, preferences and groceries stay on this browser and device. Once loaded online, the game and recipes work offline. Restaurant searches need a connection.</p>`;}
+else if(view==='install'){html=title('A place on your home screen.','Install Cuisine Quest for quick access and offline dinner ideas.')+'<ol class="steps"><li>On iPhone or iPad, open this page in Safari, tap Share, then Add to Home Screen.</li><li>On Android, use your browser menu and choose Install app or Add to Home screen. In desktop Chrome or Edge, look for the install icon in the address bar.</li></ol><p class="note">If an existing shortcut still says Food Quest, its launcher label may need to be edited or the shortcut recreated. Your new app name is Cuisine Quest.</p>';}
+else if(view==='clear-groceries'){html=title('Clear your grocery list?','This removes all meals and checkmarks from this list. Your saved dinners stay saved.')+'<div class="modal-actions"><button class="secondary" data-action="groceries">Keep my list</button><button class="danger" data-action="confirm-clear">Clear grocery list</button></div>';}
+else if(view==='copy-list'){html=title('Your grocery list','Select and copy the text below.')+`<textarea class="input" rows="12" readonly>${esc(groceryText())}</textarea>`;}
+$('#modal-body').innerHTML=html;}
+function recipeHTML(){const m=activeMeal;if(!m)return '';const c=catMap.get(m.cat);let html=`<div class="recipe-top"><div class="meal-art">${c.emoji}</div><div><span class="meal-meta">${m.kind==='cook'?'COOK AT HOME':'ORDER OUT'}</span>${title(esc(m.name))}</div>${favButton(m)}</div>`;
+if(m.kind==='cook'){html+=`<span class="tag">About ${m.minutes} minutes</span><span class="tag">${state.servings} serving${state.servings===1?'':'s'}</span><div class="servings"><span>Cooking for</span><button data-action="servings" data-step="-1" aria-label="Fewer servings" ${state.servings===1?'disabled':''}>−</button><strong>${state.servings}</strong><button data-action="servings" data-step="1" aria-label="More servings" ${state.servings===8?'disabled':''}>+</button></div><h3 class="section-title">Pick up at the store</h3><ul class="ingredient-list">${m.ingredients.filter(i=>!i.pantry).map(i=>`<li>${esc(CQ.ingredient(i,state.servings))}</li>`).join('')}</ul><h3 class="section-title">Check your cupboard</h3><ul class="ingredient-list">${m.ingredients.filter(i=>i.pantry).map(i=>`<li>${esc(CQ.ingredient(i,state.servings))}</li>`).join('')}</ul><div class="modal-actions"><button class="primary" data-action="add-grocery" data-id="${m.id}">+ Add to grocery list</button><button class="secondary" data-action="choose" data-id="${m.id}">This is dinner ✓</button></div><h3 class="section-title">Make it happen</h3><ol class="steps">${m.steps.map(s=>`<li>${esc(scaleStep(s))}</li>`).join('')}</ol><p class="note">Times are estimates. Use a larger pan or cook in batches for more servings. Check ingredient labels for your needs.</p>`;}
+else{const term=m.name+' '+c.name;html+=`<p class="subtext">Look for <strong>${esc(m.name)}</strong> on a ${esc(c.name.toLowerCase())} menu. Choose your portion, sides and any substitutions directly with the restaurant.</p><label class="field-caption" for="city">SEARCH AREA (OPTIONAL)</label><input id="city" class="input" maxlength="120" placeholder="Your city or neighbourhood" value="${esc(state.city)}"><a id="restaurant-link" class="primary full" href="${mapsURL(term)}" target="_blank" rel="noopener noreferrer">Find nearby restaurants ↗</a><p class="note">Opens a Google Maps search. Menu availability, prices and delivery options are confirmed with the restaurant. Search results do not guarantee this exact dish is offered.</p><button class="secondary full" data-action="choose" data-id="${m.id}">This is dinner ✓</button>`;}return html;}
+function scaleStep(step){return step.replace(/(\d+) ml water per 2 servings/g,(_,n)=>CQ.ingredient({amount:Number(n),unit:'ml',name:'water'},state.servings)).replace('two patties per 2 servings',state.servings+' patties');}
+function mapsURL(term){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(term+' '+(state.city.trim()||'near me'));}
+function settingsHTML(){return title('Your kitchen rules.','A few things to make this feel more like you.')+`<div class="servings"><span>Default servings</span><button data-action="servings" data-step="-1" aria-label="Fewer servings" ${state.servings===1?'disabled':''}>−</button><strong>${state.servings}</strong><button data-action="servings" data-step="1" aria-label="More servings" ${state.servings===8?'disabled':''}>+</button></div>${['sound','haptics'].map(k=>`<div class="setting-row"><div>${k==='sound'?'Little kitchen sounds':'Tap vibration'}<small>${k==='sound'?'Soft notes on reveals and wins':'On supported devices'}</small></div><button class="switch ${state[k]?'on':''}" role="switch" aria-checked="${state[k]}" aria-label="${k==='sound'?'Sound effects':'Tap vibration'}" data-action="toggle-setting" data-key="${k}"></button></div>`).join('')}<h3 class="section-title">Ingredients or words to avoid</h3><label for="avoid" class="subtext">Separate words with commas, e.g. mushrooms, tuna.</label><input id="avoid" class="input" maxlength="250" placeholder="Any ingredients you don’t enjoy?" value="${esc(state.avoid)}"><p class="subtext">Matches names and listed home recipe ingredients. Takeout ingredients and packaged sauces aren’t fully known, so this isn’t an allergy filter.</p><h3 class="section-title">Foods in your rotation</h3><p class="subtext">Tap a category to switch it off or back on.</p><div class="category-choices">${data.categories.map(c=>`<button class="category-choice ${state.excluded.includes(c.id)?'excluded':''}" data-action="category" data-id="${c.id}" aria-pressed="${!state.excluded.includes(c.id)}">${c.emoji} ${esc(c.name)}</button>`).join('')}</div><div class="modal-actions"><button class="primary" data-action="apply-settings">Save preferences</button><button class="secondary" data-action="install">Install Cuisine Quest</button></div>${state.skipped.length?`<button class="text-button full" data-action="restore-skipped">Bring back ${state.skipped.length} skipped meal${state.skipped.length===1?'':'s'}</button>`:''}<p class="note">Your data stays on this device. Clearing browser data removes it. ${storageOK?'':'Storage is unavailable in this browser session.'}</p>`;}
+function groceriesHTML(){let html=title('A little shopping list.','Saved here for your next grocery run. Tick things off as you go.');if(!state.groceries.length)return html+'<div class="empty"><span>☷</span>Your list is waiting.<br>Open a home dinner and tap “Add to grocery list.”</div><button class="primary full" data-action="close">Back to dinner</button>';
+html+='<div class="modal-actions"><button class="primary" data-action="share-list">Share / copy list ↗</button><button class="secondary" data-action="clear-list">Clear list</button></div>';
+return html+state.groceries.map(g=>`<section class="grocery-group"><div class="grocery-heading"><div><h3>${esc(g.name)}</h3><small>${g.servings} serving${g.servings===1?'':'s'}</small></div><button class="icon-btn" data-action="remove-grocery" data-id="${g.id}" aria-label="Remove ${esc(g.name)} from list">×</button></div>${[false,true].map(p=>`<div class="pantry-label">${p?'CHECK YOUR CUPBOARD':'GROCERIES'}</div>${g.items.map((i,j)=>i.pantry===p?`<label class="check-row ${i.checked?'done':''}"><input type="checkbox" data-grocery="${g.id}" data-item="${j}" ${i.checked?'checked':''}><span>${esc(i.text)}</span></label>`:'').join('')}`).join('')}</section>`).join('');}
+function savedHTML(){let html=title('Your little dinner book.','Keep the good ones. Give yesterday’s dinner a little review.')+`<div class="segmented"><button class="${savedTab==='favourites'?'selected':''}" data-action="saved-tab" data-tab="favourites">♡ Favourites</button><button class="${savedTab==='recent'?'selected':''}" data-action="saved-tab" data-tab="recent">↻ Recently picked</button></div>`;if(savedTab==='favourites'){const meals=state.favourites.map(id=>mealMap.get(id)).filter(Boolean);html+=meals.length?`<div class="meal-cards" style="margin-top:18px">${meals.map(m=>mealCard(m)).join('')}</div><button class="primary full" style="margin-top:18px" data-action="play-favourites">Play with my favourites</button>`:'<div class="empty"><span>♡</span>Something worth making again?<br>Tap a heart on any dinner to save it here.</div>';}else{html+=state.history.length?state.history.map(h=>{const m=mealMap.get(h.id);if(!m)return '';return `<article class="history-row"><h3>${esc(m.name)}</h3><small>${new Date(h.at).toLocaleDateString(undefined,{month:'short',day:'numeric'})} · ${m.kind==='cook'?'Cook at home':'Order out'}</small><div class="rating">${[['love','Loved it'],['okay','It was okay'],['skip','Skip next time']].map(([k,s])=>`<button class="${h.rating===k?'selected':''}" data-action="rate" data-id="${h.id}" data-at="${h.at}" data-rating="${k}">${s}</button>`).join('')}<button data-action="meal" data-id="${h.id}">Open meal ↗</button></div></article>`;}).join(''):'<div class="empty"><span>↻</span>Your dinner story starts here.<br>Choose “This is dinner” on a meal to remember it.</div>';}return html;}
+function closeModal(){if(view==='settings'){const input=$('#avoid');if(input&&input.value!==state.avoid){state.avoid=input.value;filtersDirty=true;}}if(modal.open)modal.close();if(filtersDirty){filtersDirty=false;newRound();}state.introSeen=true;save();}
+function addGroceries(m){const id=m.id+'-'+state.servings;if(state.groceries.some(g=>g.id===id)){toast('This meal and serving size are already on your list.');return;}state.groceries.push({id,mealId:m.id,name:m.name,servings:state.servings,items:m.ingredients.map(i=>({text:CQ.ingredient(i,state.servings),pantry:i.pantry,checked:false}))});save();toast('Added for '+state.servings+'. Your checklist is saved.');}
+function groceryText(){return 'CUISINE QUEST · GROCERY LIST\n\n'+state.groceries.map(g=>g.name+' ('+g.servings+' servings)\n'+g.items.filter(i=>!i.checked).map(i=>'□ '+i.text+(i.pantry?' [check cupboard]':'')).join('\n')).join('\n\n');}
+async function shareList(){const text=groceryText();if(navigator.share){try{await navigator.share({title:'Cuisine Quest grocery list',text});return;}catch(e){if(e.name==='AbortError')return;}}try{await navigator.clipboard.writeText(text);toast('Unchecked items copied. Ready to paste.');}catch{openView('copy-list','groceries');}}
+async function install(){if(deferredInstall){await deferredInstall.prompt();const result=await deferredInstall.userChoice;deferredInstall=null;if(result.outcome==='accepted')toast('Cuisine Quest is ready for your home screen.');}else openView('install','settings');}
+function choose(m){state.history=[{id:m.id,at:Date.now(),rating:''},...state.history].slice(0,40);save();toast('Dinner decided: '+m.name);}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const a=b.dataset.action,id=b.dataset.id;
+switch(a){
+case 'reveal':reveal(Number(b.dataset.index));break;
+case 'new':closeModal();newRound();break;
+case 'play':closeModal();if(round.winner)openView('results');else $('#board').scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});break;
+case 'mode':state.mode=b.dataset.mode;if(state.mode==='order'&&['quick','budget'].includes(state.mood))state.mood='all';save();newRound();break;
+case 'close':closeModal();break;
+case 'back':openView(backView||'results');break;
+case 'filters':openView('filters');break;
+case 'settings':openView('settings');break;
+case 'help':openView('help');break;
+case 'saved':openView('saved');break;
+case 'groceries':openView('groceries');break;
+case 'source':state.source=b.dataset.source;filtersDirty=true;save();renderView();break;
+case 'mood':state.mood=b.dataset.mood;filtersDirty=true;save();renderView();break;
+case 'apply-filters':filtersDirty=false;closeModal();newRound();break;
+case 'reset-filters':state.mode='either';state.mood='all';state.source='discover';state.excluded=[];state.avoid='';state.skipped=[];save();closeModal();newRound();break;
+case 'category':if($('#avoid'))state.avoid=$('#avoid').value;state.excluded=state.excluded.includes(id)?state.excluded.filter(x=>x!==id):[...state.excluded,id];filtersDirty=true;save();renderView();break;
+case 'toggle-setting':if($('#avoid'))state.avoid=$('#avoid').value;state[b.dataset.key]=!state[b.dataset.key];save();renderView();if(state[b.dataset.key])pulse();break;
+case 'apply-settings':state.avoid=$('#avoid').value;filtersDirty=false;save();closeModal();newRound();toast('Your kitchen preferences are saved.');break;
+case 'servings':if($('#avoid'))state.avoid=$('#avoid').value;state.servings=Math.min(8,Math.max(1,state.servings+Number(b.dataset.step)));save();renderView();break;
+case 'restore-skipped':state.skipped=[];filtersDirty=true;save();renderView();toast('Skipped dinners are back in the mix.');break;
+case 'more':{const old=cards.map(m=>m.id);const options=available.filter(m=>m.cat===round.winner);const fresh=CQ.suggestions(options,state.mealSeen,3,old);cards=fresh.length===3?fresh:[...fresh,...CQ.suggestions(options,state.mealSeen,3-fresh.length,fresh.map(m=>m.id))];stamp(cards);renderView();if(!fresh.length)toast('Those are all the ideas for this mix. Try another menu.');break;}
+case 'swap':swapMeal(id);break;
+case 'meal':activeMeal=mealMap.get(id);openView('meal',view==='saved'?'saved':'results');break;
+case 'favourite':state.favourites=state.favourites.includes(id)?state.favourites.filter(x=>x!==id):[...state.favourites,id];save();renderView();break;
+case 'choose':choose(mealMap.get(id));break;
+case 'add-grocery':addGroceries(mealMap.get(id));break;
+case 'remove-grocery':state.groceries=state.groceries.filter(g=>g.id!==id);save();renderView();break;
+case 'clear-list':openView('clear-groceries','groceries');break;
+case 'confirm-clear':state.groceries=[];save();openView('groceries');break;
+case 'share-list':await shareList();break;
+case 'saved-tab':savedTab=b.dataset.tab;renderView();break;
+case 'play-favourites':state.source='favourites';state.mood='all';save();closeModal();newRound();break;
+case 'rate':{const h=state.history.find(h=>h.id===id&&h.at===Number(b.dataset.at));if(!h)break;h.rating=b.dataset.rating;if(h.rating==='love'&&!state.favourites.includes(id))state.favourites.push(id);if(h.rating==='skip')state.skipped=[...new Set([...state.skipped,id])];else state.skipped=state.skipped.filter(x=>x!==id);save();renderView();break;}
+case 'install':await install();break;
 }
-
-// --- 2. UI CONTROLLERS & PWA LOGIC ---
-const uiOverlay = document.getElementById('ui-overlay');
-const playAgainBtn = document.getElementById('play-again-btn');
-const underGrid = document.getElementById('under-grid');
-
-// Settings Elements
-const settingsBtn = document.getElementById('settings-btn');
-const settingsOverlay = document.getElementById('settings-overlay');
-const closeSettingsBtn = document.getElementById('close-settings-btn');
-const installBtn = document.getElementById('install-btn');
-
-playAgainBtn.addEventListener('click', () => { window.location.reload(); });
-
-settingsBtn.addEventListener('click', () => { settingsOverlay.classList.add('active'); });
-closeSettingsBtn.addEventListener('click', () => { settingsOverlay.classList.remove('active'); });
-
-function showMessage(title, body) {
-    uiOverlay.classList.add('active');
-    document.getElementById('message-title').innerText = title;
-    document.getElementById('message-body').innerHTML = body; 
-}
-
-// PWA Installation Logic
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.classList.remove('hidden');
 });
-
-installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            installBtn.classList.add('hidden');
-        }
-        deferredPrompt = null;
-    }
-});
-
-
-// --- 3. GAME INITIALIZATION ---
-function initializeGame() {
-    generateGridData();
-    renderGrid();
-    initCanvasScratch();
-}
-
-function generateGridData() {
-    const shuffledMaster = [...CUISINES].sort(() => 0.5 - Math.random());
-    const possibleWinners = shuffledMaster.slice(0, 4);
-    const fillers = shuffledMaster.slice(4, 14);
-
-    let tempGrid = [];
-    
-    // 4 copies of the 4 winners (16 cells)
-    possibleWinners.forEach(cuisine => {
-        for (let i = 0; i < 4; i++) tempGrid.push(cuisine);
-    });
-
-    // 2 copies of the 10 fillers (20 cells)
-    fillers.forEach(cuisine => {
-        for (let i = 0; i < 2; i++) tempGrid.push(cuisine);
-    });
-
-    gridData = tempGrid.sort(() => 0.5 - Math.random());
-}
-
-function renderGrid() {
-    underGrid.innerHTML = '';
-    gridData.forEach(cuisine => {
-        const cell = document.createElement('div');
-        cell.className = 'grid-cell';
-        cell.innerHTML = `<div>${cuisine.emoji}</div>`;
-        underGrid.appendChild(cell);
-    });
-}
-
-// --- 4. INSTANT SNAP MECHANICS & KITCHEN AESTHETIC ---
-function initCanvasScratch() {
-    const canvas = document.getElementById('main-canvas');
-    const ctx = canvas.getContext('2d');
-    
-    canvas.width = 500; 
-    canvas.height = 500; 
-
-    // Draw the "Ceramic Tile" cover
-    ctx.fillStyle = '#f4f1ea'; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Ghosted Plate & Silverware Watermark
-    ctx.save(); 
-    ctx.globalAlpha = 0.25; 
-    ctx.font = '280px Arial'; 
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#8e9e82'; 
-    
-    ctx.fillText('🍽️', canvas.width / 2, canvas.height / 2 + 10); 
-    
-    ctx.globalCompositeOperation = "source-atop";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.restore(); 
-    
-    // Draw Tile Grout lines (6x6)
-    ctx.strokeStyle = '#e0dcd3'; 
-    ctx.lineWidth = 3;
-    const step = canvas.width / 6;
-    
-    for(let i = 1; i < 6; i++) {
-        ctx.beginPath(); ctx.moveTo(i * step, 0); ctx.lineTo(i * step, 500); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, i * step); ctx.lineTo(500, i * step); ctx.stroke();
-    }
-
-    ctx.fillStyle = '#6b7a5f'; 
-    ctx.font = 'bold 32px Nunito, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('TAP TO REVEAL', canvas.width/2, canvas.height/2);
-
-    let isInteracting = false;
-
-    function getPosition(e) {
-        const rect = canvas.getBoundingClientRect();
-        let clientX = e.type.includes('touch') ? (e.touches[0] || e.changedTouches[0]).clientX : e.clientX;
-        let clientY = e.type.includes('touch') ? (e.touches[0] || e.changedTouches[0]).clientY : e.clientY;
-        return {
-            x: (clientX - rect.left) * (canvas.width / rect.width),
-            y: (clientY - rect.top) * (canvas.height / rect.height)
-        };
-    }
-
-    function processInteraction(e) {
-        if (gameWon) return;
-        
-        const pos = getPosition(e);
-        const zoneW = canvas.width / 6; 
-        const zoneH = canvas.height / 6;
-        
-        const col = Math.floor(pos.x / zoneW);
-        const row = Math.floor(pos.y / zoneH);
-        
-        if (col < 0 || col > 5 || row < 0 || row > 5) return; 
-        
-        const zoneIndex = row * 6 + col; 
-
-        if (!revealedZones.includes(zoneIndex)) {
-            ctx.clearRect(col * zoneW - 1, row * zoneH - 1, zoneW + 2, zoneH + 2);
-            revealedZones.push(zoneIndex);
-            checkForWin(canvas);
-        }
-    }
-
-    canvas.addEventListener('mousedown', (e) => { isInteracting = true; processInteraction(e); }); 
-    canvas.addEventListener('mousemove', (e) => { if (isInteracting) processInteraction(e); });
-    window.addEventListener('mouseup', () => { isInteracting = false; }); 
-    
-    canvas.addEventListener('touchstart', (e) => { 
-        isInteracting = true; 
-        e.preventDefault(); 
-        processInteraction(e); 
-    }, { passive: false }); 
-    
-    canvas.addEventListener('touchmove', (e) => { 
-        if (isInteracting) {
-            e.preventDefault(); 
-            processInteraction(e); 
-        }
-    }, { passive: false }); 
-    window.addEventListener('touchend', () => { isInteracting = false; });
-}
-
-// --- 5. WIN LOGIC & FULL REVEAL ---
-function checkForWin(canvas) {
-    if (gameWon) return;
-
-    const revealedCounts = {};
-    
-    for (let zoneIndex of revealedZones) {
-        const cuisine = gridData[zoneIndex];
-        revealedCounts[cuisine.id] = (revealedCounts[cuisine.id] || 0) + 1;
-        
-        if (revealedCounts[cuisine.id] === 3) {
-            gameWon = true;
-            canvas.style.opacity = '0';
-
-            // Fetch exactly 3 random suggestions
-            const topSuggestions = getRandomSuggestions(cuisine.suggestions, 3);
-            let suggestionsHTML = "";
-
-            if (topSuggestions.length > 0) {
-                suggestionsHTML = `
-                    <div class="suggestions-list">
-                        <p><strong>Chef's Suggestions:</strong></p>
-                        <ul>
-                            ${topSuggestions.map(s => `<li>${s}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            setTimeout(() => {
-                canvas.style.display = 'none'; 
-                showMessage(
-                    "WE HAVE A WINNER!", 
-                    `<div class="winner-emoji">${cuisine.emoji}</div>
-                     <p>You matched 3!</p>
-                     <p>Tonight's dinner is <strong>${cuisine.name}</strong></p>
-                     ${suggestionsHTML}`
-                );
-            }, 800); 
-            
-            return;
-        }
-    }
-}
-
-window.onload = initializeGame;
+document.addEventListener('change',e=>{const input=e.target;if(input.dataset.grocery){const g=state.groceries.find(g=>g.id===input.dataset.grocery);if(g){g.items[Number(input.dataset.item)].checked=input.checked;input.closest('.check-row').classList.toggle('done',input.checked);save();}}});
+document.addEventListener('input',e=>{if(e.target.id==='city'){state.city=e.target.value;save();const m=activeMeal;$('#restaurant-link').href=mapsURL(m.name+' '+catMap.get(m.cat).name);}if(e.target.id==='avoid'){state.avoid=e.target.value;filtersDirty=true;save();}});
+modal.addEventListener('cancel',e=>{e.preventDefault();closeModal();});
+modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeModal();}});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;});
+window.addEventListener('appinstalled',()=>{deferredInstall=null;toast('Cuisine Quest installed.');});
+function connectionStatus(){$('#connection').textContent=navigator.onLine?'Your daily dinner detour':'Offline · let’s cook';}
+window.addEventListener('online',connectionStatus);window.addEventListener('offline',connectionStatus);
+async function boot(){try{const response=await fetch('./meals.json');if(!response.ok)throw new Error('Meal file unavailable');data=await response.json();mealMap=new Map(data.meals.map(m=>[m.id,m]));catMap=new Map(data.categories.map(c=>[c.id,c]));state.favourites=state.favourites.filter(id=>mealMap.has(id));newRound();connectionStatus();if(!state.introSeen)openView('help');if(!storageOK)toast('Storage is unavailable. Your changes last for this visit only.');}catch(error){$('#board').innerHTML='<div class="empty-board"><strong>We couldn’t set the table.</strong><p>Make sure meals.json is uploaded beside index.html, then reopen the app while online.</p></div>';console.error(error);}}
+if('serviceWorker'in navigator&&location.protocol!=='file:'){let refreshing=false;const wasControlled=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(wasControlled&&!refreshing){refreshing=true;location.reload();}});window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(r=>{registration=r;}).catch(()=>{/* The game still works online when offline installation is unavailable. */}));}
+boot();
